@@ -1,7 +1,6 @@
 <template>
     <div>
     <el-container style="height: 100vh;">
-      
             <el-aside width="20%">
                 <el-menu
                     :default-active="activeIndex"
@@ -53,6 +52,7 @@
                 </el-menu>  
             </el-aside>
             <el-container>
+             
             <el-header style="text-align: right; font-size: 12px">
               <el-dropdown>
                 <i class="el-icon-user" style="margin-right: 15px;font-size: 20px"></i>
@@ -62,27 +62,27 @@
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
-              <!--<span>{{ userInfo.user_id }}</span>-->
+              <span>{{ userInfo.user_id }}</span>
             </el-header>
             <el-main>
                 <router-view></router-view>
-                <!--<child-component  :parentValue="parentValue"></child-component>-->
+                
             </el-main>
           </el-container>
         </el-container>
-        
+        <!--<child-component :parentValue="parentValue"></child-component>-->
     </div>
 </template>
 
 <script>
-import ChildComponent from './DataView.vue';
+//import ChildComponent from './DataView.vue';
 
  import axios from 'axios';
 
 export default {
-  components: {
-      ChildComponent
-    },
+  //components: {
+      //ChildComponent
+    //},
     data() {
     return {
       parentValue: 'lalala',
