@@ -30,21 +30,29 @@
             <el-form-item prop="email" label="邮箱" >
               <el-input v-model="form1.email"></el-input>
             </el-form-item>
-  
-     
+    
+        
+        <el-form-item label="证明资料" prop="file">
           
-            <el-form-item label="登录密码" prop="pass">
+              <input
+              type="file"
+              ref="fileInput"
+              @change="handleFileChange"
+          />
+        
+  
+        </el-form-item>
+
+
+          
+        <el-form-item label="登录密码" prop="pass">
               <el-input type="password" v-model="form1.pass" autocomplete="off"></el-input>
             </el-form-item>
          
             <el-form-item label="密码确认" prop="checkPass">
               <el-input type="password" v-model="form1.checkPass" autocomplete="off"></el-input>
             </el-form-item>
-    
-        
-        <el-form-item label="证明资料上传">
-            <el-input v-model="form1.file"></el-input>
-          </el-form-item>
+
 
           <el-form-item>
             <el-button type="primary" @click="submitForm('form1')">注册</el-button>
@@ -94,19 +102,11 @@
        
    
           <el-form-item label="证照上传" prop="file">
-            <el-upload
-              class="upload-demo"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :before-remove="beforeRemove"
-              multiple
-              :limit="3"
-              :on-exceed="handleExceed"
-              :file-list="fileList">
-              <el-button size="small" type="primary">点击上传</el-button>
-              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-            </el-upload>
+            <input
+              type="file"
+              ref="fileInput"
+              @change="handleFileChange2"
+          />
           </el-form-item>
        
       
@@ -131,6 +131,7 @@
    
   <script>
   import axios from 'axios';
+  import { Message } from 'element-ui';
   export default {
     data() {
       var validatePass = (rule, value, callback) => {
@@ -178,7 +179,7 @@
           idcard: '',
           gender: '',
           email: '',
-          file: '',
+          file: null,
           pass: '',
           checkPass: ''
         },
@@ -191,7 +192,7 @@
           time: '',
           person: '',
           tel: '',
-          fileList: [],
+          file: null,
           twopass: '',
           twocheckPass: ''
         },
@@ -222,7 +223,7 @@
           ],
           idcard:[
             { required: true, message: '请输入身份证号码', trigger: 'blur' },
-            { pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d X|x)$)/, message: '请输入正确的身份证号码', trigger: 'blur' }
+            { pattern: /(^\d{15}$)|(^\d{17}(\d|X)$)|(^\d{17}(\d|x)$)/, message: '请输入正确的身份证号码', trigger: 'blur' }
           ],
           gender: [
             { required: true, message: '请选择性别', trigger: 'change' }
@@ -249,17 +250,71 @@
             { min: 1, max: 100, message: '请输入正确名字', trigger: 'blur' }
           ],
           file: [
-            { required: false, message: '请上传文件', trigger: 'blur' },
+            { required: true, message: '请上传文件', trigger: 'blur' },
           ],
         },
       };
     },
     methods: {
+      handleFileChange(event) {
+        this.form1.file = event.target.files[0];
+      },
+
+      handleFileChange2(event) {
+        this.form2.file = event.target.files[0];
+      },
+
+      uploadFile() {
+        const formData = new FormData();
+        formData.append('file', this.form1.file);
+   
+        // 发送文件到后端
+        axios.post('http://localhost:5000/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+            .then(response => {
+              console.log(response.data);
+              // 在这里你可以处理上传成功的逻辑
+              if ('error' in response.data) {
+                Message.success(response.data.error);
+                return
+              }
+              // 显示成功消息
+              Message.success(response.data);
+            })
+            .catch(error => {
+              console.error(error);
+              // 在这里你可以处理上传失败的逻辑
+   
+              // 显示错误消息
+              Message.error('文件上传失败');
+            });
+      },
+
+
       person() {
         const ref = this.$route.params.referrer;
-        const data=this.form1
-        data['referrer']=ref
-          axios.post('http://localhost:5000/per_register',{data:data})
+        const formData = new FormData();
+        formData.append('file', this.form1.file);
+        formData.append('referrer', ref);
+        formData.append('name', this.form1.name);
+        formData.append('tel', this.form1.tel);
+        formData.append('idcard', this.form1.idcard);
+        formData.append('gender', this.form1.gender);
+        formData.append('email', this.form1.email);
+        formData.append('pass', this.form1.pass);
+
+        //const ref = this.$route.params.referrer;
+        //const data=this.form1
+        //data['referrer']=ref
+          //axios.post('http://localhost:5000/per_register',{data:data})
+          axios.post('http://localhost:5000/per_register',formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
         .then((
             res) => {
             console.log(res)
@@ -278,9 +333,29 @@
 
         business() {
         const ref = this.$route.params.referrer;
-        const data=this.form2
-        data['referrer']=ref
-          axios.post('http://localhost:5000/bus_register',{data:data})
+        const formData = new FormData();
+        formData.append('file', this.form2.file);
+        formData.append('referrer', ref);
+        formData.append('name', this.form2.name);
+        formData.append('tel', this.form2.tel);
+        formData.append('person', this.form2.person);
+        formData.append('usci', this.form2.usci);
+        formData.append('adress', this.form2.adress);
+        formData.append('twopass', this.form2.twopass);
+        formData.append('bn', this.form2.bn);
+        formData.append('money', this.form2.money);
+        formData.append('time', this.form2.time);
+
+  
+        //const ref = this.$route.params.referrer;
+        //const data=this.form2
+        //data['referrer']=ref
+          //axios.post('http://localhost:5000/bus_register',{data:data})
+          axios.post('http://localhost:5000/bus_register',formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
         .then((
             res) => {
             console.log(res)
@@ -320,22 +395,9 @@
         });
       },
 
-
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-      handleRemove(file, fileList) {
-        console.log(file, fileList);
-      },
-      handlePreview(file) {
-        console.log(file);
-      },
-      handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
-      beforeRemove(file, fileList) {
-        return this.$confirm(`确定移除 ${ file.name }？`);
-      }
     }
   };
   </script>

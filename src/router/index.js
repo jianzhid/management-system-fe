@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuex from 'vuex';
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
@@ -16,9 +17,12 @@ import HoutaiView from '../views/HoutaiView.vue'
 import Test3View from '../views/Test3View.vue'
 import Test4View from '../views/Test4View.vue'
 import Test5VIew from '../views/Test5VIew.vue'
+import Test6View from '../views/Test6View.vue'
+import Test7View from '../views/Test7View.vue'
 
 
 Vue.use(VueRouter)
+Vue.use(Vuex);
 
 const routes = [
   {
@@ -99,10 +103,24 @@ const routes = [
       },
     ]
   },
+  {
+    path: '/test6',
+    name: 'test6',
+    component: Test6View
+  },
+  {
+    path: '/test7',
+    name: 'test7',
+    component: Test7View
+  },
 ]
 
 const router = new VueRouter({
   routes
 })
 
+
+
 export default router
+
+

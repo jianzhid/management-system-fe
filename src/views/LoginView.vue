@@ -94,6 +94,7 @@
             // 跳转到主页
             this.$router.push("/home");
             this.$message.success("HI! " + this.loginRuleForm.username + " 欢迎来到管理平台！");
+            this.$store.commit('setUsername', this.loginRuleForm.username);
 
           })
         .catch(
@@ -134,7 +135,7 @@
       /* 宽度 */
       width: 450px;
       /* 高度 */
-      height: 350px;
+      height: 400px;
       /* 背景色 */
       background: #fff;
       /* 属性定位 */

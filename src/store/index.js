@@ -3,15 +3,15 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+
+
 export default new Vuex.Store({
   state: {
-  },
-  getters: {
+    username: null
   },
   mutations: {
-  },
-  actions: {
-  },
-  modules: {
+    setUsername(state, username) {
+      state.username = username;
+    }
   }
-})
+});
