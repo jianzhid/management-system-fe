@@ -20,7 +20,7 @@
             </el-form-item>
             <el-row>
               <el-col :span="11">
-            <router-link to="/register">还没有账号，去创建</router-link>
+            <!--<router-link to="/register">还没有账号，去创建</router-link>-->
             <router-view></router-view>
           </el-col>
             <el-form-item class="btns">

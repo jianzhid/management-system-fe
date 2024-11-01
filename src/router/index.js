@@ -19,6 +19,11 @@ import Test4View from '../views/Test4View.vue'
 import Test5VIew from '../views/Test5VIew.vue'
 import Test6View from '../views/Test6View.vue'
 import Test7View from '../views/Test7View.vue'
+import Test8View from '../views/Test8View.vue';
+import Test9View from '../views/Test9View.vue';
+import Test10View from '../views/Test10View.vue';
+import Test11View from '@/views/Test11View.vue';
+import BottomNav from '@/views/BottomNav.vue';
 
 
 Vue.use(VueRouter)
@@ -112,6 +117,31 @@ const routes = [
     path: '/test7',
     name: 'test7',
     component: Test7View
+  },
+  {
+    path: '/test8',
+    name: 'test8',
+    component: Test8View
+  },
+  {
+    path: '/test9',
+    name: 'test9',
+    component: Test9View
+  },
+  {
+    path: '/test10',
+    name: 'test10',
+    component: Test10View
+  },
+  {
+    path: '/test11',
+    name: 'test11',
+    component: Test11View
+  },
+  {
+    path: '/bottom',
+    name: 'bottom',
+    component: BottomNav
   },
 ]
 
